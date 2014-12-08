@@ -1,0 +1,15 @@
+{
+  "name": "Proofreader",
+  "description": "Simple text proofreader based on 'write-good' (hemingway-app-like suggestions) and 'nodehun' (spelling).",
+  "version": "0.0.1",
+  "dependencies": {
+    "cheerio": "^0.18.0",
+    "cli-color": "^0.3.2",
+    "commander": "^2.5.0",
+    "nodehun": "^0.2.3",
+    "nodehun-sentences": "^0.1.1",
+    "request": "^2.49.0",
+    "sync": "^0.2.3",
+    "write-good": "^0.8.0"
+  }
+}
