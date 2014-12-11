@@ -8,6 +8,7 @@ var program = require('commander');
 
 program
   .option('-u, --url [url]', 'URL to website that should be proofread.')
+  .option('-f, --file [path]', 'Path to HTML file that should be proofread.')
   .parse(process.argv);
 
 //Spelling dictionary setup
@@ -27,12 +28,23 @@ customDict.forEach(function(word) {
 //Hemingway-app-like suggestions
 var writeGood = require('write-good');
 
-request({uri: program.url}, function (err, response, body) {
-  if (err) {
-    throw err;
-  }
+if(program.url) {
+  request({uri: program.url}, function (err, response, body) {
+    if (err) {
+      throw err;
+    }
 
-  var $ = cheerio.load(body);
+    proofread(body);
+
+  });
+} else if(program.file) {
+  var content = fs.readFileSync(program.file);
+
+  proofread(content);
+}
+
+function proofread(html) {
+  var $ = cheerio.load(html);
 
   Sync(function () {
 
@@ -71,5 +83,4 @@ request({uri: program.url}, function (err, response, body) {
     });
 
   });
-
-});
+}
