@@ -64,7 +64,7 @@ function proofread(html) {
     $('pre, code').remove();
 
     //Whitelist tags that should be processed
-    $('p, li, h1, h2, h3').each(function () {
+    $('p, li, h1, h2, h3, h4, th, td, dl, figcaption').each(function () {
       var text = $(this).text();
 
       //remove linebreaks from text
