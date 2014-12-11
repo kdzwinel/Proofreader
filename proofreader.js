@@ -5,10 +5,13 @@ var clc = require('cli-color');
 var Sync = require('sync');
 var cheerio = require('cheerio');
 var program = require('commander');
+var mime = require('mime');
+var marked = require('marked');
 
 program
   .option('-u, --url [url]', 'URL to website that should be proofread.')
   .option('-f, --file [path]', 'Path to HTML file that should be proofread.')
+  .option('-c, --include-correct', 'Include correct paragraphs in the output.')
   .parse(process.argv);
 
 //Spelling dictionary setup
@@ -19,7 +22,7 @@ var dict = new nodehun(
   fs.readFileSync('./dictionaries/en_US/en_US.dic')
 );
 
-var customDict = ['minifier', 'minifying', 'minified', 'DevTools', 'breakpoint', 'breakpoints', 'unminified', 'evals', 'evaled', 'debuggable', 'uncaught', 'protip', 'subtree', 'blackboxing', 'blackbox', 'async', 'callback', 'callbacks', 'CoffeeScript', 'JavaScript', 'CSS', 'HTML5', 'app', 'apps', 'checkbox', 'checkboxes', 'timeline', 'V8', 'Cmd', 'Ctrl', 'workflow', 'workflows', 'localhost', 'JSON', 'subfolder', 'webpage', 'XHR', 'SQL', 'WebKit', 'AppCache', 'SDK', 'WebView', 'plugin', 'ADB', 'USB', 'MAMP', 'IP', 'omnibox', 'screencast', 'Wi-Fi', 'Sass', 'KitKat', 'WebViews', 'screencasting', 'API', 'IDE', 'WebSocket', 'WebSockets', 'VM', 'GC', 'iframe', 'iframes', 'inline', 'sourcemaps', 'sourcemap', 'wiki', 'Esc', 'F2', 'F5', 'F8', 'F10', 'F11', 'hostname', 'WebGL', 'iOS', 'MathML', 'UA', 'GPU', 'UI', 'geolocation', 'GPS', 'viewport', 'stylesheet', 'stylesheets', 'dpi', 'iPhone', 'PageUp', 'PageDown', 'W3C', 'SCSS', 'RGB', 'HSL', 'XPath'];
+var customDict = ['minifier', 'minifying', 'minified', 'DevTools', 'breakpoint', 'breakpoints', 'unminified', 'evals', 'evaled', 'debuggable', 'uncaught', 'protip', 'subtree', 'blackboxing', 'blackbox', 'async', 'callback', 'callbacks', 'CoffeeScript', 'JavaScript', 'CSS', 'HTML5', 'app', 'apps', 'checkbox', 'checkboxes', 'timeline', 'V8', 'Cmd', 'Ctrl', 'workflow', 'workflows', 'localhost', 'JSON', 'subfolder', 'webpage', 'XHR', 'SQL', 'WebKit', 'AppCache', 'SDK', 'WebView', 'plugin', 'ADB', 'USB', 'MAMP', 'IP', 'omnibox', 'screencast', 'Wi-Fi', 'Sass', 'KitKat', 'WebViews', 'screencasting', 'API', 'IDE', 'WebSocket', 'WebSockets', 'VM', 'GC', 'iframe', 'iframes', 'inline', 'sourcemaps', 'sourcemap', 'wiki', 'Esc', 'F2', 'F5', 'F8', 'F10', 'F11', 'hostname', 'WebGL', 'iOS', 'MathML', 'UA', 'GPU', 'UI', 'geolocation', 'GPS', 'viewport', 'stylesheet', 'stylesheets', 'dpi', 'iPhone', 'PageUp', 'PageDown', 'W3C', 'SCSS', 'RGB', 'HSL', 'XPath', 'blog', 'GitHub', 'NodeJS', 'WebStorm', 'JetBrains', 'WebDriver'];
 
 customDict.forEach(function(word) {
   dict.addWord(word);
@@ -34,13 +37,22 @@ if(program.url) {
       throw err;
     }
 
-    proofread(body);
-
+    proofread(toHTML(program.url, body));
   });
 } else if(program.file) {
-  var content = fs.readFileSync(program.file);
+  var content = fs.readFileSync(program.file).toString();
 
-  proofread(content);
+  proofread(toHTML(program.file, content));
+}
+
+function toHTML(path, content) {
+  mime = mime.lookup(path);
+
+  if(mime === 'text/x-markdown') {
+    return marked(content);
+  }
+
+  return content;
 }
 
 function proofread(html) {
@@ -56,30 +68,33 @@ function proofread(html) {
       var text = $(this).text();
 
       //remove linebreaks from text
-      text = text.replace(/(\r\n|\n|\r)/gm," ");
+      text = text.replace(/(\r\n|\n|\r)+/gm," ");
 
       //replace ’ with '
       text = text.replace(/’/g, "'");
 
-      var writeGoodSuggestions = writeGood(text);
-      var spellingSuggestions = spellcheck.sync(null, dict, text);
+      if(text.trim().length) {
+        var writeGoodSuggestions = writeGood(text);
+        var spellingSuggestions = spellcheck.sync(null, dict, text);
 
-      //Printing output
-      if(writeGoodSuggestions.length || spellingSuggestions.length) {
-        console.log(clc.red(text));
+        //Printing output
+        if(writeGoodSuggestions.length || spellingSuggestions.length) {
+          console.log(clc.red(text));
 
-        writeGoodSuggestions.forEach(function(item) {
-          console.log(clc.blue.bold(' - ' + item.reason));
-        });
+          writeGoodSuggestions.forEach(function(item) {
+            console.log(clc.blue.bold(' - ' + item.reason));
+          });
 
-        spellingSuggestions.forEach(function(item) {
-          console.log(clc.magenta.bold(' - "' + item.word + '" -> ' + item.suggestions));
-        });
-      } else {
-        console.log(clc.green(text));
+          spellingSuggestions.forEach(function(item) {
+            console.log(clc.magenta.bold(' - "' + item.word + '" -> ' + item.suggestions));
+          });
+
+          console.log();
+        } else if (program.includeCorrect) {
+          console.log(clc.green(text));
+          console.log();
+        }
       }
-
-      console.log();
     });
 
   });
