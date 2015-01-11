@@ -16,7 +16,7 @@
     }
   ],
   "bin": {
-    "proofreader": "./proofreader.js"
+    "proofreader": "./bin/cmd.sh"
   },
   "dependencies": {
     "cheerio": "^0.18.0",

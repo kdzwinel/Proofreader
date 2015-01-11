@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 //Helpers
 var fs = require('fs');
 var request = require('request');
