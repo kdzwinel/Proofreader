@@ -1,0 +1,10 @@
+{
+  "dictionaries": {
+    "build-in": ["en_US"],
+    "custom": []
+  },
+  "selectors": {
+    "whitelist": "p, li, h1, h2, h3, h4, th, td, dl, figcaption",
+    "blacklist": "pre, code"
+  }
+}
