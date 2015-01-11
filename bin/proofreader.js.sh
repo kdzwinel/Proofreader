@@ -107,6 +107,7 @@ function proofread(html) {
           });
 
           console.log();
+          process.exit(1);
         } else if (program.includeCorrect) {
           console.log(clc.green(text));
           console.log();
