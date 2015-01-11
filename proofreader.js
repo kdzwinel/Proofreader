@@ -11,17 +11,20 @@ var marked = require('marked');
 program
   .option('-u, --url [url]', 'URL to website that should be proofread.')
   .option('-f, --file [path]', 'Path to HTML file that should be proofread.')
+  .option('-l, --file-list [path]', 'Path to a list of files that should be proofread.')
   .option('-c, --include-correct', 'Include correct paragraphs in the output.')
   .parse(process.argv);
 
 //Spelling dictionary setup
 var spellcheck = require('nodehun-sentences');
 var nodehun = require('nodehun');
+//TODO move to settings
 var dict = new nodehun(
   fs.readFileSync('./dictionaries/en_US/en_US.aff'),
   fs.readFileSync('./dictionaries/en_US/en_US.dic')
 );
 
+//TODO move to settings
 var customDict = ['minifier', 'minifying', 'minified', 'DevTools', 'breakpoint', 'breakpoints', 'unminified', 'evals', 'evaled', 'debuggable', 'uncaught', 'protip', 'subtree', 'blackboxing', 'blackbox', 'async', 'callback', 'callbacks', 'CoffeeScript', 'JavaScript', 'CSS', 'HTML5', 'app', 'apps', 'checkbox', 'checkboxes', 'timeline', 'V8', 'Cmd', 'Ctrl', 'workflow', 'workflows', 'localhost', 'JSON', 'subfolder', 'webpage', 'XHR', 'SQL', 'WebKit', 'AppCache', 'SDK', 'WebView', 'plugin', 'ADB', 'USB', 'MAMP', 'IP', 'omnibox', 'screencast', 'Wi-Fi', 'Sass', 'KitKat', 'WebViews', 'screencasting', 'API', 'IDE', 'WebSocket', 'WebSockets', 'VM', 'GC', 'iframe', 'iframes', 'inline', 'sourcemaps', 'sourcemap', 'wiki', 'Esc', 'F1', 'F2', 'F5', 'F6', 'F8', 'F10', 'F11', 'F12', 'hostname', 'WebGL', 'iOS', 'MathML', 'UA', 'GPU', 'UI', 'geolocation', 'GPS', 'viewport', 'stylesheet', 'stylesheets', 'dpi', 'iPhone', 'PageUp', 'PageDown', 'W3C', 'SCSS', 'RGB', 'HSL', 'XPath', 'blog', 'GitHub', 'NodeJS', 'WebStorm', 'JetBrains', 'WebDriver', 'screenshot', 'screenshots', 'RSS', 'UX', 'codebase', 'IRC', 'fallback', 'inspectable', 'dropdown', 'IndexedDB', 'WebSQL', 'jQuery', 'timeline', 'timelines', 'jank', 'HAR', 'TTFB', 'DNS'];
 
 customDict.forEach(function(word) {
@@ -43,12 +46,21 @@ if(program.url) {
   var content = fs.readFileSync(program.file).toString();
 
   proofread(toHTML(program.file, content));
+} else if(program.fileList) {
+  var listOfFiles = fs.readFileSync(program.fileList).toString().split("\n");
+
+  listOfFiles.forEach(function(filePath) {
+    if(filePath) {
+      var content = fs.readFileSync(filePath).toString();
+      proofread(toHTML(filePath, content));
+    }
+  });
 }
 
 function toHTML(path, content) {
-  mime = mime.lookup(path);
+  var mimeType = mime.lookup(path);
 
-  if(mime === 'text/x-markdown') {
+  if(mimeType === 'text/x-markdown') {
     return marked(content);
   }
 
@@ -61,9 +73,11 @@ function proofread(html) {
   Sync(function () {
 
     //Blacklist tags with code
+    //TODO move to settings
     $('pre, code').remove();
 
     //Whitelist tags that should be processed
+    //TODO move to settings
     $('p, li, h1, h2, h3, h4, th, td, dl, figcaption').each(function () {
       var text = $(this).text();
 
