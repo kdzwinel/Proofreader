@@ -9,6 +9,7 @@ var cheerio = require('cheerio');
 var program = require('commander');
 var mime = require('mime');
 var marked = require('marked');
+var path = require('path');
 
 program
   .option('-u, --url [url]', 'URL to website that should be proofread.')
@@ -22,8 +23,8 @@ var spellcheck = require('nodehun-sentences');
 var nodehun = require('nodehun');
 //TODO move to settings
 var dict = new nodehun(
-  fs.readFileSync('./dictionaries/en_US/en_US.aff'),
-  fs.readFileSync('./dictionaries/en_US/en_US.dic')
+  fs.readFileSync(path.join(__dirname, '../dictionaries/en_US/en_US.aff')),
+  fs.readFileSync(path.join(__dirname, '../dictionaries/en_US/en_US.dic'))
 );
 
 //TODO move to settings
