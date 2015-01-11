@@ -1,5 +1,5 @@
 {
-  "name": "Proofreader",
+  "name": "proofreader",
   "description": "Simple text proofreader based on 'write-good' (hemingway-app-like suggestions) and 'nodehun' (spelling).",
   "version": "0.3.0",
   "repository": {
