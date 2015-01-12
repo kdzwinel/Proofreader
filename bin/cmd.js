@@ -21,7 +21,7 @@ program
 
 //if custom config file was provided
 if (program.configFile) {
-  config = require(program.configFile);
+  config = JSON.parse(fs.readFileSync(program.configFile));
 }
 
 //configuration validation
