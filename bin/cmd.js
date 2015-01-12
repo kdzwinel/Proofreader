@@ -124,15 +124,10 @@ if (program.url) {
   });
 
   Promise.all(promises).then(function(files) {
-    var clean = true;
     files.forEach(function(paragraphs) {
       if(paragraphs.length > 0) {
-        clean = false;
+        process.exit(1);
       }
     });
-
-    if(!clean) {
-      process.exit(1);
-    }
-  })
+  });
 }
