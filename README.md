@@ -21,6 +21,5 @@ Notes:
 Output:
 ![Console output](https://i.imgur.com/IfUw2W9.png)
 
-- red sentences have issues, green sentences don't
 - blue suggestions come from write-good
 - magenta suggestions come from nodehun
