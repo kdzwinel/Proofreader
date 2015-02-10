@@ -14,9 +14,9 @@ var Proofreader = require('../lib/proofreader.js');
 
 program
   .option('-u, --url [url]', 'URL to website that should be proofread.')
-  .option('-f, --file [path]', 'Path to HTML file that should be proofread.')
+  .option('-f, --file [path]', 'Path to HTML or Markdown file that should be proofread.')
   .option('-l, --file-list [path]', 'Path to a list of files that should be proofread.')
-  .option('-c, --config-file [path]', 'Path to a configuration file')
+  .option('-c, --config-file [path]', 'Path to a custom configuration file.')
   .parse(process.argv);
 
 //if custom config file was provided
