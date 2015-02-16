@@ -1,4 +1,4 @@
-Proofreader [![Build Status](https://travis-ci.org/kdzwinel/Proofreader.svg)](https://travis-ci.org/kdzwinel/Proofreader)
+Proofreader [![Build Status](https://travis-ci.org/kdzwinel/Proofreader.svg)](https://travis-ci.org/kdzwinel/Proofreader) [![npm version](https://badge.fury.io/js/proofreader.svg)](http://badge.fury.io/js/proofreader)
 ===========
 
 Proofreader takes a website, or a local file, and tries to proofread it using [write-good](https://github.com/btford/write-good) and [nodehun](https://github.com/nathanjsweet/nodehun).
