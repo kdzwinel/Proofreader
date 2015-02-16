@@ -1,4 +1,4 @@
-Proofreader
+Proofreader [![Build Status](https://travis-ci.org/kdzwinel/Proofreader.svg)](https://travis-ci.org/kdzwinel/Proofreader)
 ===========
 
 Proofreader takes a website, or a local file, and tries to proofread it using [write-good](https://github.com/btford/write-good) and [nodehun](https://github.com/nathanjsweet/nodehun).
