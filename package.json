@@ -32,10 +32,12 @@
     "promise": "^6.0.1",
     "request": "^2.49.0",
     "sync": "^0.2.3",
-    "write-good": "^0.8.0"
+    "write-good": "^0.8.0",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "chai": "^2.0.0",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "nock": "^0.59.1"
   }
 }
