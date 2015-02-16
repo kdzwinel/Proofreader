@@ -49,6 +49,9 @@ Path to a custom configuration file (default one is in `settings.json`). This fi
   "selectors": {
     "whitelist": "p, li, h1, h2, h3, h4, th, td, dl, figcaption",
     "blacklist": "pre, code"
+  },
+  "write-good": {
+    "weasel": false
   }
 }
 ```
@@ -59,6 +62,7 @@ Path to a custom configuration file (default one is in `settings.json`). This fi
 - **selectors**
   - **whitelist** - CSS selector that specifies all elements that should be processed. This also applies to Markdown which is compiled to HTML before processing.
   - **blacklist** - All elements that match this CSS selector will be *removed* before proofreading.
+  - **write-good** - Additional settings for write-good (more details [here](https://github.com/btford/write-good#checks)).
 
 ## Notes
 Please note that this project was:

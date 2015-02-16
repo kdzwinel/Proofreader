@@ -34,6 +34,14 @@ describe("Proofreader", function() {
     });
   });
 
+  describe("setWriteGoodSettings", function() {
+    it("should throw if something different than an object (or undefined) is provided", function () {
+      expect(proofreader.setWriteGoodSettings.bind(proofreader, "")).to.throw();
+      expect(proofreader.setWriteGoodSettings.bind(proofreader, {})).not.to.throw();
+      expect(proofreader.setWriteGoodSettings.bind(proofreader)).not.to.throw();
+    });
+  });
+
   describe("proofread", function() {
     beforeEach(function() {
       proofreader.addDictionary('./dictionaries/en_GB.dic', './dictionaries/en_GB.aff');
@@ -94,6 +102,24 @@ describe("Proofreader", function() {
     it("should trim text", function() {
       return proofreader.proofread("<p>  A tezt.     </p>").then(function(suggestions) {
         expect(suggestions[0].text).to.be.equal("A tezt.");
+      });
+    });
+
+    it("should work without a dictionary", function() {
+      var proofreader = new Proofreader();
+      proofreader.setWhitelist("p");
+
+      return proofreader.proofread("<p>The cat was stolen.</p>").then(function(paragraphs) {
+        expect(paragraphs[0].suggestions.spelling.length).to.be.equal(0);
+        expect(paragraphs[0].suggestions.writeGood.length).not.to.be.equal(0);
+      });
+    });
+
+    it("should use provided write-good settings", function () {
+      proofreader.setWriteGoodSettings({passive: false});
+
+      return proofreader.proofread("<p>The cat was stolen.</p>").then(function(paragraphs) {
+        expect(paragraphs[0].suggestions.writeGood.length).to.be.equal(0);
       });
     });
   });

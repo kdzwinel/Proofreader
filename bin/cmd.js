@@ -37,6 +37,7 @@ var proofreader = new Proofreader();
 
 proofreader.setWhitelist(config.selectors.whitelist);
 proofreader.setBlacklist(config.selectors.blacklist);
+proofreader.setWriteGoodSettings(config['write-good']);
 
 config.dictionaries['build-in'].forEach(function (dictName) {
   proofreader.addDictionary(path.join(__dirname, '../dictionaries/' + dictName + '.dic'),
@@ -119,6 +120,7 @@ sourceLoader
   })
   .then(function (files) {
     files.forEach(function (paragraphs) {
+      //if there are any suggestions exit with 1
       if (paragraphs.length > 0) {
         process.exit(1);
       }
