@@ -1,7 +1,7 @@
 {
   "name": "proofreader",
   "description": "Simple text proofreader based on 'write-good' (hemingway-app-like suggestions) and 'nodehun' (spelling).",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "repository": {
     "type": "git",
     "url": "git://github.com/kdzwinel/Proofreader.git"

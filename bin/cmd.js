@@ -121,7 +121,7 @@ sourceLoader
   .then(function (files) {
     files.forEach(function (paragraphs) {
       //if there are any suggestions exit with 1
-      if (paragraphs.length > 0) {
+      if (paragraphs && paragraphs.length > 0) {
         process.exit(1);
       }
     });
