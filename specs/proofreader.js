@@ -22,19 +22,19 @@ describe("Proofreader", function() {
 
   describe("setWhitelist", function() {
     it("should throw if something different than a string is provided", function () {
-      expect(proofreader.setWhitelist.bind(proofreader, [])).not.to.throw();
+      expect(proofreader.setWhitelist.bind(proofreader, "p")).not.to.throw();
       expect(proofreader.setWhitelist.bind(proofreader, null)).to.throw(/must be a string/);
     });
   });
 
   describe("setBlacklist", function() {
     it("should throw if something different than a string is provided", function () {
-      expect(proofreader.setBlacklist.bind(proofreader, [])).not.to.throw();
+      expect(proofreader.setBlacklist.bind(proofreader, "p")).not.to.throw();
       expect(proofreader.setBlacklist.bind(proofreader, null)).to.throw(/must be a string/);
     });
   });
 
-  describe.only("proofread", function() {
+  describe("proofread", function() {
     beforeEach(function() {
       proofreader.addDictionary('./dictionaries/en_GB.dic', './dictionaries/en_GB.aff');
       proofreader.setWhitelist('p');
@@ -54,6 +54,12 @@ describe("Proofreader", function() {
     it("should process only matching selectors", function() {
       return proofreader.proofread("<h1>H1 tezt.</h1><p>Paragraph tezt.</p><div>H2 tezt.</div>").then(function(suggestions) {
         expect(suggestions[0].text).to.be.equal("Paragraph tezt.");
+      });
+    });
+
+    it("should process all matching selectors", function() {
+      return proofreader.proofread("<p>Paragraph tezt1.</p><p>Paragraph tezt2.</p><p>Paragraph tezt3.</p>").then(function(suggestions) {
+        expect(suggestions.length).to.be.equal(3);
       });
     });
 

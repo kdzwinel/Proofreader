@@ -29,12 +29,12 @@ Downloads and processes single remote file from given URL.
 Processes single local file from given path.
 
 ### --file-list (-l)
-Processes all *local* files listed in the provided file. Sample list file:
+Processes all sources listed in the provided file. Sample list file:
 
 ```
 ../docs/file.html
-../docs/file2.html
 /home/developer/otherfile.md
+http://localhost/remote-file.md
 ```
 
 ### --config-file (-c)

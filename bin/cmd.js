@@ -3,14 +3,14 @@
 //Helpers
 var fs = require('fs');
 var path = require('path');
-var request = require('request');
 var program = require('commander');
 var mime = require('mime');
 var marked = require('marked');
-var Promise = require('promise');
 var clc = require('cli-color');
+var Promise = require('promise');
 var config = require('../settings.json');
 var Proofreader = require('../lib/proofreader.js');
+var SourceLoader = require('../lib/sourceloader.js');
 
 program
   .option('-u, --url [url]', 'URL to website that should be proofread.')
@@ -84,50 +84,43 @@ function printResults(title, results) {
   });
 }
 
-if (program.url) {
-  request({uri: program.url}, function (err, response, body) {
-    if (err) {
-      throw err;
-    }
+var sourceLoader = new SourceLoader();
 
-    proofreader.proofread(toHTML(program.url, body))
-      .then(function (results) {
-        printResults(program.url, results);
-
-        if(results.length) {
-          process.exit(1);
-        }
-      });
-  });
-} else if (program.file) {
-  var content = fs.readFileSync(program.file).toString();
-
-  proofreader.proofread(toHTML(program.file, content))
-    .then(function (results) {
-      printResults(program.file, results);
-
-      if(results.length) {
-        process.exit(1);
-      }
-    });
+//TODO #7 - there is no longer need to distinguish between a file and URI
+if (program.url || program.file) {
+  sourceLoader.add(program.url || program.file);
 } else if (program.fileList) {
   var listOfFiles = fs.readFileSync(program.fileList).toString().split("\n");
-  var promises = listOfFiles.map(function (filePath) {
-    if (filePath) {
-      var content = fs.readFileSync(filePath).toString();
-      return proofreader.proofread(toHTML(filePath, content))
-        .then(function (result) {
-          printResults(filePath, result);
-          return result;
-        });
+
+  listOfFiles.forEach(function (path) {
+    if (path.length > 0) {
+      sourceLoader.add(path);
     }
   });
+}
 
-  Promise.all(promises).then(function(files) {
-    files.forEach(function(paragraphs) {
-      if(paragraphs.length > 0) {
+sourceLoader
+  .load()
+  .then(function (sources) {
+    return Promise.all(sources.map(function (source) {
+      if (source.error) {
+        console.log("### Proofreader *failed* to load", source.path, "###");
+        console.log(source.error);
+        console.log();
+        return;
+      }
+
+      return proofreader.proofread(toHTML(source.path, source.content))
+        .then(function (result) {
+          printResults(source.path, result);
+          return result;
+        });
+    }));
+  })
+  .then(function (files) {
+    files.forEach(function (paragraphs) {
+      if (paragraphs.length > 0) {
         process.exit(1);
       }
     });
   });
-}
