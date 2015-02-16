@@ -1,7 +1,7 @@
 {
   "name": "proofreader",
   "description": "Simple text proofreader based on 'write-good' (hemingway-app-like suggestions) and 'nodehun' (spelling).",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/kdzwinel/Proofreader.git"
@@ -9,11 +9,18 @@
   "bugs": {
     "url": "http://github.com/kdzwinel/Proofreader/issues"
   },
+  "author": "Konrad Dzwinel <kdzwinel@gmail.com>",
   "licenses": [
     {
       "type": "MIT",
       "url": "https://github.com/kdzwinel/Proofreader/blob/master/LICENSE"
     }
+  ],
+  "keywords": [
+    "spelling",
+    "spellcheck",
+    "proofreading",
+    "proofread"
   ],
   "bin": {
     "proofreader": "./bin/cmd.js"
@@ -27,8 +34,8 @@
     "commander": "^2.5.0",
     "marked": "^0.3.2",
     "mime": "^1.2.11",
-    "nodehun": "^0.2.3",
-    "nodehun-sentences": "^0.1.1",
+    "nodehun": "^1.0.2",
+    "nodehun-sentences": "kdzwinel/nodehun-sentences",
     "promise": "^6.0.1",
     "request": "^2.49.0",
     "sync": "^0.2.3",
