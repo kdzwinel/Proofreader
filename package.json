@@ -35,7 +35,7 @@
     "marked": "^0.3.2",
     "mime": "^1.2.11",
     "nodehun": "^1.0.2",
-    "nodehun-sentences": "kdzwinel/nodehun-sentences",
+    "nodehun-sentences": "^1.0.1",
     "promise": "^6.0.1",
     "request": "^2.49.0",
     "sync": "^0.2.3",
