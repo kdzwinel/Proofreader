@@ -7,7 +7,6 @@ var program = require('commander');
 var mime = require('mime');
 var marked = require('marked');
 var clc = require('cli-color');
-var Promise = require('promise');
 var config = require('../settings.json');
 var Proofreader = require('../lib/proofreader.js');
 var SourceLoader = require('../lib/sourceloader.js');
@@ -51,7 +50,7 @@ if (config.dictionaries['custom']) {
 }
 
 function toHTML(path, content) {
-  var mimeType = mime.lookup(path);
+  var mimeType = mime.getType(path);
 
   if (mimeType === 'text/markdown') {
     return marked(content);
@@ -115,6 +114,9 @@ sourceLoader
         .then(function (result) {
           printResults(source.path, result);
           return result;
+        })
+        .catch(function (error) {
+          console.error('Proofreading failed', error);
         });
     }));
   })

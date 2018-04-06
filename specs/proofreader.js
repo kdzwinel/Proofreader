@@ -1,5 +1,4 @@
 var Proofreader = require('../lib/proofreader.js');
-var Promise = require('promise');
 
 //FIXME: hack that fixes the tests, more info here: https://stackoverflow.com/questions/30683061/testing-synchronous-code
 setInterval(function(){}, 10);

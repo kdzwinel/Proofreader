@@ -1,7 +1,7 @@
 {
   "name": "proofreader",
   "description": "Simple text proofreader based on 'write-good' (hemingway-app-like suggestions) and 'nodehun' (spelling).",
-  "version": "0.6.6",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/kdzwinel/Proofreader.git"
@@ -10,12 +10,7 @@
     "url": "http://github.com/kdzwinel/Proofreader/issues"
   },
   "author": "Konrad Dzwinel <kdzwinel@gmail.com>",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/kdzwinel/Proofreader/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "keywords": [
     "spelling",
     "spellcheck",
@@ -29,17 +24,15 @@
     "test": "mocha specs --require specs/helpers/chai.js"
   },
   "dependencies": {
-    "cheerio": "^0.19.0",
+    "cheerio": "^0.22.0",
     "cli-color": "^1.0.0",
     "commander": "^2.5.0",
-    "marked": "^0.3.9",
-    "mime": "^1.2.11",
-    "nodehun": "^2.0.4",
-    "nodehun-sentences": "^1.0.1",
-    "promise": "^7.0.1",
+    "marked": "^0.3.18",
+    "mime": "^2.2.2",
+    "nodehun": "^2.0.11",
+    "nodehun-sentences": "^1.0.4",
     "request": "^2.49.0",
-    "sync": "^0.2.3",
-    "write-good": "^0.9.1"
+    "write-good": "^0.11.3"
   },
   "devDependencies": {
     "chai": "^2.0.0",

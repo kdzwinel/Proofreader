@@ -1,4 +1,3 @@
-var Promise = require('promise');
 var nock = require('nock');
 var mockfs = require('mock-fs');
 var SourceLoader = require('../lib/sourceloader.js');
