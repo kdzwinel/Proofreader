@@ -53,7 +53,7 @@ if (config.dictionaries['custom']) {
 function toHTML(path, content) {
   var mimeType = mime.lookup(path);
 
-  if (mimeType === 'text/x-markdown') {
+  if (mimeType === 'text/markdown') {
     return marked(content);
   }
 
